@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF--8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paark - VIP - Packs & TWD</title>
+  <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #1e40af;
+      --accent-color: #60a5fa;
+      --gold-color: #fbbf24;
+      --gold-dark: #d97706;
+      --text-color: #f5f5f5;
+      --panel-bg: rgba(30, 58, 138, 0.25);
+      --panel-border: rgba(251, 191, 36, 0.3);
+      --input-bg: rgba(255, 255, 255, 0.1);
+      --input-border: rgba(251, 191, 36, 0.5);
+      --button-primary: linear-gradient(135deg, #1e40af, #1d4ed8);
+      --button-hover: linear-gradient(135deg, #1d4ed8, #1e40af);
+      --button-active: linear-gradient(135deg, #1e3a8a, #1e40af);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+    
+    body {
+      background-image: url('https://lh3.googleusercontent.com/d/1ECtr_z7YWp_QugVyvTQBWTiV9d88m5zS');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+    }
+    
+    body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(20,20,30,0.8) 100%); z-index: -1; }
+    
+    .container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; flex-grow: 1; }
+    
+    header { text-align: center; position: relative; flex-shrink: 0; }
+    header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: linear-gradient(to right, var(--gold-color), #ffffff, var(--gold-dark)); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    header p { color: var(--accent-color); font-weight: 300; }
+    
+    .cotacao-display { margin-top: 10px; background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 15px; font-size: 0.9rem; border: 1px solid var(--gold-color); box-shadow: 0 0 10px rgba(251,191,36,0.3); display: inline-flex; align-items: center; }
+    .cotacao-display .icon { margin-right: 8px; color: var(--gold-color); }
+    .cotacao-display .value { font-weight: 600; color: var(--gold-color); }
+
+    .main-layout { display: flex; gap: 20px; flex-grow: 1; }
+    .left-column { flex: 2; display: flex; flex-direction: column; min-width: 0; }
+    .right-column { flex: 1.2; display: flex; flex-direction: column; min-width: 0; }
+    
+    .tab-buttons { display: flex; justify-content: center; gap: 15px; flex-shrink: 0; margin-bottom: -12px; }
+    .tab-button { padding: 15px 40px; font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 600; cursor: pointer; border: 1px solid var(--panel-border); background: rgba(0,0,0,0.3); color: var(--accent-color); border-radius: 10px 10px 0 0; border-bottom: none; position: relative; overflow: hidden; }
+    .tab-button.active { background: var(--panel-bg); color: var(--gold-color); border-color: var(--gold-color); transform: translateY(2px); box-shadow: 0 0 15px rgba(251, 191, 36, 0.6), 0 0 25px rgba(251, 191, 36, 0.4); }
+
+    @keyframes shimmer-effect { from { transform: translateX(-150%) skewX(-30deg); } to { transform: translateX(150%) skewX(-30deg); } }
+    .tab-button.active::after { content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%); animation: shimmer-effect 2.5s infinite linear; }
+    
+    .tab-content { flex-grow: 1; }
+    .tab-pane { height: 100%; display: none; }
+    .tab-pane.active { display: block; }
+    
+    .panel { background: var(--panel-bg); border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 1px solid var(--panel-border); backdrop-filter: blur(10px); padding: 20px; animation: fadeIn 0.6s ease forwards; height: auto; overflow-y: auto; }
+    .tab-content .panel { border-top-left-radius: 0; border-top-right-radius: 0; height: 100%; }
+    
+    .panel-header { text-align: center; margin-bottom: 20px; }
+    h2 { font-family: 'Cinzel', serif; font-size: 1.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); color: var(--gold-color); }
+    h3 { font-family: 'Cinzel', serif; font-size: 1.1rem; margin: 15px 0 10px; color: var(--accent-color); text-align: center; border-bottom: 1px solid var(--panel-border); padding-bottom: 8px; }
+    
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+    input { width: 100%; padding: 10px 12px; background: var(--input-bg); color: var(--text-color); border: 1px solid var(--input-border); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    input:focus { outline: none; border-color: var(--gold-color); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3); }
+    input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; }
+    
+    .pacote-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+    .twd-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    
+    .result-group { margin: 15px 0; padding: 12px; background: rgba(0, 0, 0, 0.2); border-radius: 8px; border-left: 4px solid var(--gold-color); }
+    .result-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.95rem; }
+    .result-item:last-child { margin-bottom: 0; }
+    .result-label { font-weight: 500; }
+    .result-value { font-weight: 700; color: var(--gold-color); }
+    .result-value small { font-size: 0.8em; opacity: 0.8; }
+    
+    .total-grand { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; text-align: center; color: var(--gold-color); text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .total-grand span { display: block; margin-top: 5px; font-size: 1.5rem; }
+    .total-grand span small { font-size: 0.7em; opacity: 0.8; }
+    
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; background: var(--button-primary); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 100%; margin-top: 10px; }
+    .btn:hover { background: var(--button-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.25); }
+    .btn:active { background: var(--button-active); transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+    .btn svg { width: 16px; height: 16px; margin-right: 8px; }
+    
+    .payment-methods { display: flex; flex-direction: column; gap: 15px; margin-top: 15px;}
+    .payment-method { padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 12px; border-left: 4px solid var(--gold-color); position: relative; }
+    .payment-method-title { display: flex; align-items: center; font-size: 1.1rem; margin-bottom: 10px; color: var(--accent-color); }
+    .payment-method-title span { margin-left: 8px; }
+    .payment-details { font-size: 0.95rem; }
+    .payment-details strong { color: var(--gold-color); }
+    
+    .invisible-button { position: absolute; top: 15px; right: 15px; width: 25px; height: 25px; background: transparent; border: none; cursor: pointer; z-index: 10; padding: 0; }
+    .invisible-button::after { content: "💎"; font-size: 16px; opacity: 0.5; transition: opacity 0.3s, transform 0.2s; }
+    .invisible-button:hover::after { opacity: 1; transform: scale(1.2); }
+    
+    .tooltip { position: fixed; background: rgba(0,0,0,0.9); color: white; padding: 10px 15px; border-radius: 8px; font-size: 0.9rem; z-index: 1000; pointer-events: none; opacity: 0; transition: opacity 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    
+    .instruction-block { margin-top: 25px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 8px; border-top: 2px solid var(--gold-color); }
+    .instruction-block h3 { border-bottom: none; margin-top: 0; margin-bottom: 12px; padding-bottom: 0; color: var(--gold-color); }
+    .instruction-block ol { list-style: none; padding-left: 0; counter-reset: instruction-counter; }
+    .instruction-block li { position: relative; padding-left: 35px; margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5; }
+    .instruction-block li::before { counter-increment: instruction-counter; content: counter(instruction-counter); position: absolute; left: 0; top: 0; width: 22px; height: 22px; background: var(--gold-color); color: var(--primary-color); border-radius: 50%; font-weight: bold; text-align: center; line-height: 22px; font-size: 0.85rem; }
+    .instruction-block a { color: var(--accent-color); font-weight: bold; text-decoration: none; transition: color 0.2s ease; }
+    .instruction-block a:hover { color: var(--gold-color); text-decoration: underline; }
+    
+    .sound-control { position: fixed; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); padding: 8px; border-radius: 50%; cursor: pointer; z-index: 1000; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); border: 1px solid var(--panel-border); }
+    .sound-icon { width: 20px; height: 20px; fill: var(--text-color); }
+    .muted .sound-icon .wave { opacity: 0.3; }
+    .muted .sound-icon .line { opacity: 1; }
+    .volume-slider { position: fixed; bottom: 15px; right: 60px; background: rgba(0,0,0,0.7); padding: 8px 12px; border-radius: 15px; z-index: 1000; display: flex; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); border: 1px solid var(--panel-border); transform: translateX(150px); opacity: 0; transition: transform 0.3s, opacity 0.3s; }
+    .volume-slider.active { transform: translateX(0); opacity: 1; }
+    .volume-slider input { width: 80px; margin: 0 8px; }
+    .volume-label { color: var(--text-color); font-size: 0.75rem; margin-right: 4px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 1200px) {
+        .main-layout { flex-direction: column; }
+        .right-column { position: static; width: 100%; }
+        .panel { height: auto; overflow-y: visible; }
+        .tab-content .panel { height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Paark - VIP - Packs & TWD</h1>
+      <p>Selecione os pacotes desejados e informe os dados da conta na aba de Packs Top Up</p>
+      <div class="cotacao-display">
+        <span class="icon">💱</span>
+        <span id="cotacao">Carregando cotação...</span>
+      </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="left-column">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab('topup')">🎮 Packs Top Up</button>
+                <button class="tab-button" onclick="showTab('twd')">💎 TWD</button>
+            </div>
+            <div class="tab-content">
+                <div id="topupTab" class="tab-pane active">
+                    <div class="panel">
+                        <h3>Pacotes de Recarga</h3>
+                        <div class="pacote-section">
+                            <div class="form-group"><label for="pack-5">$5 Pack</label><input type="number" id="pack-5" value="0" oninput="updateTopUpQuantity(5, this.value)"></div>
+                            <div class="form-group"><label for="pack-8">$8 Pack</label><input type="number" id="pack-8" value="0" oninput="updateTopUpQuantity(8, this.value)"></div>
+                            <div class="form-group"><label for="pack-10">$10 Pack</label><input type="number" id="pack-10" value="0" oninput="updateTopUpQuantity(10, this.value)"></div>
+                            <div class="form-group"><label for="pack-20">$20 Pack</label><input type="number" id="pack-20" value="0" oninput="updateTopUpQuantity(20, this.value)"></div>
+                            <div class="form-group"><label for="pack-30">$30 Pack</label><input type="number" id="pack-30" value="0" oninput="updateTopUpQuantity(30, this.value)"></div>
+                            <div class="form-group"><label for="pack-50">$50 Pack</label><input type="number" id="pack-50" value="0" oninput="updateTopUpQuantity(50, this.value)"></div>
+                            <div class="form-group"><label for="pack-100">$100 Pack</label><input type="number" id="pack-100" value="0" oninput="updateTopUpQuantity(100, this.value)"></div>
+                        </div>
+                        <h3>Informações da Conta (para Top Up)</h3>
+                        <div class="form-group"><label for="login">Login:</label><input type="text" id="login" placeholder="Digite o login"></div>
+                        <div class="form-group"><label for="password">Senha:</label><input type="text" id="password" placeholder="Digite a senha"></div>
+                        <div class="form-group"><label for="nickname">Nickname:</label><input type="text" id="nickname" placeholder="Digite o nickname"></div>
+                        <div class="form-group"><label for="server">Servidor:</label><input type="text" id="server" placeholder="Digite o servidor"></div>
+                    </div>
+                </div>
+                <div id="twdTab" class="tab-pane">
+                    <div class="panel">
+                        <h3>Pacotes TWD</h3>
+                        <div class="twd-section" id="twd-pack-section">
+                            </div>
+                        <div class="instruction-block">
+                            <h3>Como finalizar sua compra:</h3>
+                            <ol>
+                                <li>Efetue o pagamento de acordo com o resumo do seu pedido à direita.</li>
+                                <li>Acesse o <a href="https://webshop.wemade.games/en/ncgl?wmsso_sign=check" target="_blank" rel="noopener noreferrer">Webshop da Wemade</a>, adicione os itens do seu pedido e gere o link do seu carrinho.</li>
+                                <li>Envie no Discord o link do seu carrinho (começa com mycard...) e o comprovante de pagamento para prosseguirmos.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="panel">
+                <button class="invisible-button" onclick="copyForCardPayment(event)" title="Opção para pagamento com cartão"></button>
+                <div class="panel-header">
+                    <h2>🌸 Resumo do Pedido 🌸</h2>
+                </div>
+                <div class="result-group">
+                    <div class="result-item">
+                        <div class="result-label">Total Packs Top Up:</div>
+                        <div class="result-value" id="summaryTopUpDisplay">R$0.00</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Total TWD:</div>
+                        <div class="result-value" id="summaryTwdDisplay">R$0.00</div>
+                    </div>
+                    <hr style="border-color: var(--panel-border); margin: 8px 0;">
+                    <div class="total-grand">
+                        Total Geral
+                        <span id="summaryTotalDisplay">R$0.00</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="copySmartClipboard(event)">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Copiar Resumo
+                </button>
+                <div class="payment-methods">
+                    <h3>Formas de Pagamento</h3>
+                    <div class="payment-method">
+                        <div class="payment-method-title"><span>Pix</span></div>
+                        <div class="payment-details">
+                            <p><strong>CELULAR:</strong> <span>14988231270</span></p>
+                            <p><strong>Nome:</strong> <span>Paark - VIP</span></p>
+                        </div>
+                    </div>
+                    <div class="payment-method">
+                        <div class="payment-method-title"><span>Binance</span></div>
+                        <div class="payment-details"><p><strong>Email:</strong> <span>estrela203@hotmail.com</span></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+  <audio id="backgroundMusic" src="https://github.com/maykbrito/devlinks/raw/main/assets/music.mp3" loop></audio>
+  <div class="sound-control" id="soundControl">
+    <svg class="sound-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor"/><path class="wave" d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" fill="none"/><path class="wave" d="M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" fill="none"/><line class="line" x1="23" y1="1" x2="1" y2="23" stroke="currentColor" stroke-width="2" style="opacity: 0;"/></svg>
+  </div>
+  <div class="volume-slider" id="volumeSlider"><span class="volume-label">Volume:</span><input type="range" min="0" max="100" value="70" id="volumeRange"></div>
+
+<script>
+    const CONFIG = {
+        defaultExchangeRate: 5.45,
+        cardFeePercentage: 0.06,
+        twdPackages: {
+            500:   { price: 13.70 }, 800:   { price: 21.92 }, 1000:  { price: 27.40 },
+            1200:  { price: 32.88 }, 3000:  { price: 82.20 }, 3500:  { price: 95.90 },
+            5000:  { price: 137.00}, 7000:  { price: 191.80}, 10000: { price: 265.00},
+            30000: { price: 822.00}
+        },
+        topUpPackages: {
+            5: { price: 3.80 }, 8: { price: 6.08 }, 10: { price: 7.60 },
+            20: { price: 15.20 }, 30: { price: 22.80 }, 50: { price: 38.00 },
+            100: { price: 76.00 }
+        }
+    };
+
+    let audioContext, masterGainNode, backgroundMusic;
+    let isMuted = true;
+    let audioInitialized = false;
+    let exchangeRate = CONFIG.defaultExchangeRate;
+    let twdQuantities = {};
+    let topUpQuantities = {};
+
+    window.onload = function() {
+      buildTwdPacks();
+      initializeQuantities();
+      updateAllCalculations();
+      setupEventListeners();
+      atualizarCotacaoDolar();
+      document.getElementById("soundControl").classList.add("muted");
+    };
+    
+    function showTab(tabName) {
+        document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabName + 'Tab').classList.add('active');
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+        document.querySelector(`.tab-button[onclick="showTab('${tabName}')"]`).classList.add('active');
+        playSound('click');
+    }
+
+    function buildTwdPacks() {
+        const container = document.getElementById('twd-pack-section');
+        for (const [amount, details] of Object.entries(CONFIG.twdPackages)) {
+            const group = document.createElement('div');
+            group.className = 'form-group';
+            
+            const label = document.createElement('label');
+            label.htmlFor = `twd-${amount}`;
+            label.textContent = `${amount} TWD ($${details.price.toFixed(2)})`;
+            
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.id = `twd-${amount}`;
+            input.value = 0;
+            input.oninput = () => updateTwdQuantity(amount, input.value);
+            
+            group.appendChild(label);
+            group.appendChild(input);
+            container.appendChild(group);
+        }
+    }
+    
+    function initializeQuantities() {
+        Object.keys(CONFIG.twdPackages).forEach(amount => twdQuantities[amount] = 0);
+        Object.keys(CONFIG.topUpPackages).forEach(amount => topUpQuantities[amount] = 0);
+    }
+
+    function updateTwdQuantity(amount, quantity) {
+        twdQuantities[amount] = parseInt(quantity) || 0;
+        updateAllCalculations();
+        playSound('type');
+    }
+    function updateTopUpQuantity(amount, quantity) {
+        topUpQuantities[amount] = parseInt(quantity) || 0;
+        updateAllCalculations();
+        playSound('type');
+    }
+    
+    function initAudio() {
+        if (audioInitialized) return;
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            masterGainNode = audioContext.createGain();
+            masterGainNode.gain.value = 0.7;
+            masterGainNode.connect(audioContext.destination);
+            backgroundMusic = document.getElementById("backgroundMusic");
+            backgroundMusic.volume = 0.35;
+            audioInitialized = true;
+            toggleMute();
+        } catch (e) { console.error("AudioContext não pôde ser iniciado.", e); }
+    }
+    function playSound(name) {
+        if (!audioInitialized || isMuted) return;
+        const noteMap = { click: 800, hover: 600, success: 1200, type: 440 + Math.random() * 100 };
+        const gainMap = { click: 0.1, hover: 0.05, success: 0.2, type: 0.03 };
+        const duration = name === "success" ? 0.3 : 0.1;
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.type = name === "click" ? "triangle" : "sine";
+        oscillator.frequency.value = noteMap[name];
+        gainNode.gain.value = gainMap[name];
+        oscillator.connect(gainNode).connect(masterGainNode);
+        oscillator.start();
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+        oscillator.stop(audioContext.currentTime + duration);
+    }
+    function toggleMute() {
+        if (!audioInitialized) initAudio();
+        isMuted = !isMuted;
+        document.getElementById("soundControl").classList.toggle("muted", isMuted);
+        if (backgroundMusic) {
+            isMuted ? backgroundMusic.pause() : backgroundMusic.play().catch(e => {});
+        }
+        playSound('click');
+    }
+    function setupEventListeners() {
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener("keydown", () => playSound("type"));
+            if (input.type === 'number') {
+                input.addEventListener('focus', () => { if (input.value === '0') input.value = ''; });
+                input.addEventListener('blur', () => { if (input.value === '') input.value = '0'; });
+            }
+        });
+        document.querySelectorAll("button").forEach(el => {
+            el.addEventListener("click", () => playSound("click"));
+            el.addEventListener("mouseenter", () => playSound("hover"));
+        });
+        const soundControl = document.getElementById("soundControl");
+        const volumeSlider = document.getElementById("volumeSlider");
+        soundControl.addEventListener("click", toggleMute);
+        soundControl.addEventListener("mouseenter", () => volumeSlider.classList.add("active"));
+        volumeSlider.addEventListener("mouseleave", () => volumeSlider.classList.remove("active"));
+        document.getElementById("volumeRange").addEventListener("input", function() {
+            if (audioInitialized) {
+                const vol = this.value / 100;
+                masterGainNode.gain.value = vol;
+                if(backgroundMusic) backgroundMusic.volume = vol * 0.5;
+            }
+        });
+    }
+    function showTooltip(message, event) {
+        const tooltip = document.getElementById("tooltip");
+        tooltip.textContent = message;
+        const rect = event.target.getBoundingClientRect();
+        tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+        tooltip.style.top = `${rect.top - tooltip.offsetHeight - 10}px`;
+        tooltip.style.opacity = "1";
+        setTimeout(() => { tooltip.style.opacity = "0"; }, 2000);
+    }
+
+    function updateAllCalculations() {
+        let totalTwdD = 0;
+        for (const [amount, quantity] of Object.entries(twdQuantities)) {
+            totalTwdD += quantity * CONFIG.twdPackages[amount].price;
+        }
+
+        let totalTopUpD = 0;
+        for (const [amount, quantity] of Object.entries(topUpQuantities)) {
+            totalTopUpD += quantity * CONFIG.topUpPackages[amount].price;
+        }
+        
+        const totalTwdR = totalTwdD * exchangeRate;
+        const totalTopUpR = totalTopUpD * exchangeRate;
+        const totalGeralR = totalTwdR + totalTopUpR;
+        const totalGeralD = totalTwdD + totalTopUpD;
+
+        updateSummary(totalTwdR, totalTwdD, totalTopUpR, totalTopUpD, totalGeralR, totalGeralD);
+    }
+
+    function updateSummary(twdR, twdD, topUpR, topUpD, geralR, geralD) {
+        document.getElementById("summaryTwdDisplay").innerHTML = `R$${twdR.toFixed(2)} <small>/ $${twdD.toFixed(2)}</small>`;
+        document.getElementById("summaryTopUpDisplay").innerHTML = `R$${topUpR.toFixed(2)} <small>/ $${topUpD.toFixed(2)}</small>`;
+        document.getElementById("summaryTotalDisplay").innerHTML = `R$${geralR.toFixed(2)} <small>/ $${geralD.toFixed(2)}</small>`;
+    }
+    
+    async function atualizarCotacaoDolar() {
+      try {
+        const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL');
+        if (!response.ok) throw new Error('API Falhou');
+        const data = await response.json();
+        exchangeRate = parseFloat(data.price);
+      } catch (error) {
+        console.error('Erro ao buscar cotação, usando valor padrão:', error);
+        exchangeRate = CONFIG.defaultExchangeRate;
+      } finally {
+        document.getElementById('cotacao').innerHTML = `Cotação USDT/BRL: <span class="value">R$${exchangeRate.toFixed(2)}</span>`;
+        updateAllCalculations();
+      }
+    }
+    
+    function getFormValues() {
+        let data = {
+            hasTwd: false, twdText: '', totalTwdD: 0,
+            hasTopUp: false, topUpText: '', totalTopUpD: 0,
+            login: document.getElementById('login').value,
+            password: document.getElementById('password').value,
+            nickname: document.getElementById('nickname').value,
+            server: document.getElementById('server').value,
+        };
+
+        for (const [amount, quantity] of Object.entries(twdQuantities)) {
+            if (quantity > 0) {
+                data.hasTwd = true;
+                data.totalTwdD += quantity * CONFIG.twdPackages[amount].price;
+                data.twdText += `  - Pack de ${amount} TWD: ${quantity} un.\n`;
+            }
+        }
+        
+        for (const [amount, quantity] of Object.entries(topUpQuantities)) {
+            if (quantity > 0) {
+                data.hasTopUp = true;
+                data.totalTopUpD += quantity * CONFIG.topUpPackages[amount].price;
+                data.topUpText += `  - Pack de $${amount}: ${quantity} un.\n`;
+            }
+        }
+        
+        data.totalTwdR = data.totalTwdD * exchangeRate;
+        data.totalTopUpR = data.totalTopUpD * exchangeRate;
+        data.totalGeralD = data.totalTwdD + data.totalTopUpD;
+        data.totalGeralR = data.totalGeralD * exchangeRate;
+
+        return data;
+    }
+
+    function copySmartClipboard(event) {
+        const data = getFormValues();
+        if (!data.hasTwd && !data.hasTopUp) {
+            showTooltip("Selecione pelo menos um pacote!", event);
+            return;
+        }
+        
+        let texto = "⭐ RESUMO DO PEDIDO PAARK - VIP ⭐\n---------------------------------\n";
+        
+        if (data.hasTwd) {
+            texto += `💎 PACOTES TWD\n${data.twdText}`;
+            texto += `Subtotal TWD: R$${data.totalTwdR.toFixed(2)} / $${data.totalTwdD.toFixed(2)}\n---------------------------------\n`;
+        }
+        if (data.hasTopUp) {
+            texto += `🎮 PACOTES TOP UP\n${data.topUpText}`;
+            texto += `Subtotal Top Up: R$${data.totalTopUpR.toFixed(2)} / $${data.totalTopUpD.toFixed(2)}\n---------------------------------\n`;
+            if (data.login || data.password || data.nickname || data.server) {
+                texto += `👤 DADOS DA CONTA\n`;
+                if (data.login) texto += `  - Login: ${data.login}\n`;
+                if (data.password) texto += `  - Senha: ${data.password}\n`;
+                if (data.nickname) texto += `  - Nick: ${data.nickname}\n`;
+                if (data.server) texto += `  - Servidor: ${data.server}\n`;
+                texto += `---------------------------------\n`;
+            }
+        }
+        
+        texto += `💰 TOTAL GERAL: R$${data.totalGeralR.toFixed(2)} / $${data.totalGeralD.toFixed(2)}\n\n`;
+        texto += "🌸 INFORMAÇÕES DE PAGAMENTO 🌸\n";
+        texto += `PIX (Celular): 14988231270\n`;
+        texto += `Nome: Paark - VIP\n\n`;
+        texto += `Binance (Email): estrela203@hotmail.com\n`;
+        
+        navigator.clipboard.writeText(texto).then(() => {
+            showTooltip("Resumo copiado!", event);
+            playSound("success");
+        });
+    }
+
+    function copyForCardPayment(event) {
+        const data = getFormValues();
+        if (!data.hasTwd && !data.hasTopUp) {
+            showTooltip("Selecione um pacote para pagar com cartão!", event);
+            return;
+        }
+        
+        const totalComTaxa = data.totalGeralR * (1 + CONFIG.cardFeePercentage);
+        
+        let texto = "⭐ Pedido para Pagamento no Cartão ⭐\n---------------------------------\n";
+        if (data.hasTopUp) texto += `- Itens: Pacotes Top Up\n`;
+        if (data.hasTwd) texto += `- Itens: Pacotes TWD\n`;
+        
+        texto += `Valor do Pedido: R$${data.totalGeralR.toFixed(2)} / $${data.totalGeralD.toFixed(2)}\n`;
+        texto += `Taxa do Cartão (${(CONFIG.cardFeePercentage * 100).toFixed(0)}%): R$${(totalComTaxa - data.totalGeralR).toFixed(2)}\n`;
+        texto += `TOTAL A PAGAR: R$${totalComTaxa.toFixed(2)}\n\n`;
+        texto += "Link de Pagamento (Mercado Pago):\nhttps://link.mercadopago.com.br/paark-vip";
+        
+        texto += "\n\n⚠️ INFORMAÇÕES IMPORTANTES ⚠️\n---------------------------------\n";
+        texto += "💳 Pagamentos no Cartão de Crédito\n\n";
+        texto += "• O cartão deve ser, obrigatoriamente, do próprio comprador.\n";
+        texto += `• Pagamentos têm acréscimo de ${(CONFIG.cardFeePercentage * 100).toFixed(0)}% de juros.\n\n`;
+        texto += "🔒 Para segurança da transação, é necessário informar:\n";
+        texto += "  - Nome completo:\n  - CPF:\n  - Telefone (WhatsApp):\n  - Rede social ativa:\n\n";
+        texto += "❗️Atenção: Em casos de suspeita de fraude ou tentativa de golpe, temos processos internos e legais para identificar e responsabilizar o comprador.";
+        
+        navigator.clipboard.writeText(texto).then(() => {
+            showTooltip("Informações para cartão copiadas!", event);
+            playSound("success");
+        });
+    }
+</script>
+</body>
+</html>
